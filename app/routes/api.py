@@ -5,7 +5,9 @@ import json
 
 @app.route('/')
 def users():
-    return user.loadUser()
+    data = user.loadUser(True)
+    print(data)
+    return data
 
 @app.route('/users', methods=['GET','POST'])
 def add_user():

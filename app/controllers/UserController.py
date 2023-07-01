@@ -8,11 +8,10 @@ user_dict_template = {
     "umur" : 8
 }
 
-def loadUser() :
+def loadUser(res = False) :
     try:
         with open('data/user.json', mode='r') as user_json : 
             users = user_json.read()
-            return json.loads(users)
     except Exception as e:
         print(e)
         os.system('mkdir data')
@@ -21,7 +20,11 @@ def loadUser() :
             user_json.write('{}')
         with open('data/user.json', mode='r') as user_json : 
             users = user_json.read()
-        return json.loads(users)
+
+    print(res)
+    if res:
+        return response(users, "Get all")
+    return json.loads(users)
 
 def setId(user, data_users) :
     if len(data_users) > 0:
@@ -50,10 +53,10 @@ def add(request) :
     if result : 
         user, new_users = setId(validate_user, users)
         saveUsers(users)
-        return True, user
+        return True, response(user, 'Add success')
 
     else :
-        return False, error_message
+        return False, response(none, 'Something wrong', 400, error_message)
 
 def edit(request, id) :
     users = loadUser()
@@ -64,9 +67,9 @@ def edit(request, id) :
         id = str(id)
         users[id] = validate_user
         saveUsers(users)
-        return True, {id : validate_user}
+        return True, response({id : validate_user}, "Edit success")
     else : 
-        return False, error_message
+        return False, response(none, 'Something wrong', 400, error_message)
 
 
 def delete(id) :
@@ -82,8 +85,8 @@ def delete(id) :
         del users[str(id)]
         saveUsers(users)
 
-        return True, user
-    return False, "id doesn't match"
+        return True, response(user, "Delete success")
+    return False, response(none, "id doesn't match", 400, error={"message" : "id doesn't match"})
 
 def request_validation(user:dict) -> bool:
     rules = {
@@ -95,5 +98,13 @@ def request_validation(user:dict) -> bool:
     result, data, message = validate(user, rules, return_info=True)
     return result, data, message
 
-def response() :
-    return "ok"
+def response(data, msg, status = 200, error = None) :
+    res = {
+        "flaskapi" : {
+            "status" : status,
+            "message" : msg,
+            "results" : data,
+            "error" : error
+        }
+    }
+    return res
