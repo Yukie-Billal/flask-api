@@ -1,6 +1,9 @@
 from .. import app
+# import json
+import requests
 
 @app.route('/home')
 def home() :
-    # user = requests.get("http://localhost:5000")
-    return "user"
+    r = requests.get('http://localhost:5000')
+    user = r.json()
+    return user

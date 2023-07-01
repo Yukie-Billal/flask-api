@@ -7,15 +7,22 @@ import json
 def users():
     return user.loadUser()
 
-@app.route('/route', methods=['GET','POST'])
+@app.route('/users', methods=['GET','POST'])
 def add_user():
     if request.method == 'POST' : 
-        user.add(request)
+        result, data = user.add(request)
+        # if result : 
+        return data
+
         
-@app.route('/users/<int:id>')
+@app.route('/users/<int:id>', methods=['POST'])
 def edit_user(id) :
-    user.edit(request, id)
+    if request.method == 'POST' :
+        print(request.form)
+        _,data = user.edit(request, id)
+        return data
     
 @app.route('/users/<int:id>/delete')
 def delete_user(id) :
-    user.delete(id)
+    _,data = user.delete(id)
+    return data

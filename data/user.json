@@ -1,8 +1,1 @@
-[
-    {
-        "nama" : "Yukie Muhammad Billal",
-        "nohp" : "081214454695",
-        "umur" : 18,
-        "nikah" : false
-    }
-]
+{"1": {"nama": "Yukie Muhammad Billal", "email": "yukie@gmail.com", "umur": 18}, "2": {"nama": "Fadhil", "email": "fadhil@gmail.com", "umur": 13}, "3": {"nama": "Diubah lagi", "email": "ubahlagi@gmail.com", "umur": 18}}
